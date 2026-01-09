@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.Tech Grade Calculator AY 2025-26</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            animation: slideIn 0.5s ease-out 0.2s backwards;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        #numCourses {
+            padding: 10px 16px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        #numCourses:hover {
+            border-color: #764ba2;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        #numCourses:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        .course-row {
+            display: grid;
+            grid-template-columns: 2.5fr 0.8fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 25px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease-out backwards;
+        }
+
+        .course-row:nth-child(1) { animation-delay: 0.1s; }
+        .course-row:nth-child(2) { animation-delay: 0.15s; }
+        .course-row:nth-child(3) { animation-delay: 0.2s; }
+        .course-row:nth-child(4) { animation-delay: 0.25s; }
+        .course-row:nth-child(5) { animation-delay: 0.3s; }
+
+        .course-row:hover {
+            border-color: #667eea;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .course-header {
+            display: grid;
+            grid-template-columns: 2.5fr 0.8fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 18px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            animation: slideIn 0.5s ease-out 0.3s backwards;
+        }
+
+        .course-row input,
+        .course-row select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .course-row input:hover,
+        .course-row select:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .course-row input:focus,
+        .course-row select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .course-name {
+            font-weight: 500;
+        }
+
+        .credits {
+            background: #e3f2fd;
+            font-weight: bold;
+        }
+
+        .grade-select {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .grade-select option[value="O"] {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .grade-select option[value="A+"],
+        .grade-select option[value="A"] {
+            background: #2196F3;
+            color: white;
+        }
+
+        .grade-select option[value="B+"],
+        .grade-select option[value="B"] {
+            background: #FF9800;
+            color: white;
+        }
+
+        .grade-select option[value="C"],
+        .grade-select option[value="P"] {
+            background: #FFC107;
+        }
+
+        .grade-select option[value="F"] {
+            background: #F44336;
+            color: white;
+        }
+
+        .calculate-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .calculate-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        #results {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            border: 1px solid #e8e8e8;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, #e3f2fd 0%, #f0f4ff 100%);
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 30px;
+            border: 3px solid #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            animation: scaleIn 0.6s ease-out 0.2s backwards;
+        }
+
+        .summary h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .summary p {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .cgpa-display {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.5s ease-out 0.4s backwards;
+        }
+
+        .performance-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-left: 15px;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.5s ease-out 0.5s backwards;
+        }
+
+        .excellent {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .very-good {
+            background: #2196F3;
+            color: white;
+        }
+
+        .good {
+            background: #FF9800;
+            color: white;
+        }
+
+        .needs-improvement {
+            background: #F44336;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .course-row,
+            .course-header {
+                grid-template-columns: 1fr;
+            }
+
+            .course-header {
+                display: none;
+            }
+
+            .course-row input,
+            .course-row select {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 B.Tech Grade Calculator</h1>
+        <p class="subtitle">Academic Year 2025-26 Evaluation Pattern</p>
+        
+        <div class="input-group">
+            <label for="numCourses">Number of Courses:</label>
+            <select id="numCourses" onchange="addCourses()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+
+        <div class="course-header">
+            <div>Course Name</div>
+            <div>Credits</div>
+            <div>Sessional 1 (30%)</div>
+            <div>Sessional 2 (45%)</div>
+            <div>Learning Eng. (25%)</div>
+        </div>
+        
+        <div id="coursesContainer"></div>
+        
+        <button class="calculate-btn" onclick="calculateGrades()">📊 Calculate Grades & CGPA</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Grade point mapping as per AY 2025-26 pattern
+        const gradePoints = {
+            'O': 10,
+            'A+': 9,
+            'A': 8,
+            'B+': 7,
+            'B': 6,
+            'C': 5,
+            'P': 4,
+            'F': 0
+        };
+
+        const gradeOptions = ['O', 'A+', 'A', 'B+', 'B', 'C', 'P', 'F'];
+
+        // Initialize courses on page load
+        function addCourses() {
+            const num = parseInt(document.getElementById('numCourses').value);
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = '';
+            
+            for(let i = 1; i <= num; i++) {
+                const courseDiv = document.createElement('div');
+                courseDiv.className = 'course-row';
+                courseDiv.innerHTML = `
+                    <input type="text" placeholder="Course ${i} Name" class="course-name" value="Course ${i}">
+                    <select class="credits">
+                        <option value="3">3 Credits</option>
+                        <option value="4">4 Credits</option>
+                        <option value="2">2 Credits</option>
+                        <option value="1">1 Credit</option>
+                    </select>
+                    <select class="grade-select s1-grade">
+                        ${gradeOptions.map(g => `<option value="${g}">${g}</option>`).join('')}
+                    </select>
+                    <select class="grade-select s2-grade">
+                        ${gradeOptions.map(g => `<option value="${g}">${g}</option>`).join('')}
+                    </select>
+                    <select class="grade-select le-grade">
+                        ${gradeOptions.map(g => `<option value="${g}">${g}</option>`).join('')}
+                    </select>
+                `;
+                container.appendChild(courseDiv);
+            }
+        }
+
+        // Convert WGP to letter grade
+        function getLetterGrade(wgp) {
+            if (wgp >= 9.00) return 'O';
+            if (wgp >= 8.00) return 'A+';
+            if (wgp >= 7.00) return 'A';
+            if (wgp >= 6.00) return 'B+';
+            if (wgp >= 5.00) return 'B';
+            if (wgp >= 4.00) return 'C';
+            return 'F';
+        }
+
+        // Get grade point for letter grade
+        function getGradePoint(letterGrade) {
+            const gradePointMap = {
+                'O': 10,
+                'A+': 9,
+                'A': 8,
+                'B+': 7,
+                'B': 6,
+                'C': 5,
+                'F': 0
+            };
+            return gradePointMap[letterGrade];
+        }
+
+        // Main calculation function
+        function calculateGrades() {
+            const rows = document.querySelectorAll('.course-row');
+            
+            if (rows.length === 0) {
+                alert('Please add at least one course!');
+                return;
+            }
+
+            let totalCredits = 0;
+            let totalGradePoints = 0;
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Course</th>
+                            <th>Credits</th>
+                            <th>S1</th>
+                            <th>S2</th>
+                            <th>LE</th>
+                            <th>WGP</th>
+                            <th>Grade</th>
+                            <th>Grade Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            rows.forEach((row, index) => {
+                const name = row.querySelector('.course-name').value || `Course ${index + 1}`;
+                const credits = parseInt(row.querySelector('.credits').value);
+                const s1Grade = row.querySelector('.s1-grade').value;
+                const s2Grade = row.querySelector('.s2-grade').value;
+                const leGrade = row.querySelector('.le-grade').value;
+
+                // Get grade points for each component
+                const s1GP = gradePoints[s1Grade];
+                const s2GP = gradePoints[s2Grade];
+                const leGP = gradePoints[leGrade];
+
+                // Calculate Weighted Grade Point (WGP)
+                // S1: 30%, LE: 25%, S2: 45%
+                const wgp = (s1GP * 0.30) + (leGP * 0.25) + (s2GP * 0.45);
+                
+                // Determine course letter grade from WGP
+                const courseGrade = getLetterGrade(wgp);
+                
+                // Get grade point for the course grade
+                const courseGP = getGradePoint(courseGrade);
+                
+                // Calculate grade points earned
+                const gpoints = credits * courseGP;
+
+                totalCredits += credits;
+                totalGradePoints += gpoints;
+
+                tableHTML += `
+                    <tr>
+                        <td style="text-align: left; font-weight: 500;">${name}</td>
+                        <td><strong>${credits}</strong></td>
+                        <td>${s1Grade}</td>
+                        <td>${s2Grade}</td>
+                        <td>${leGrade}</td>
+                        <td><strong>${wgp.toFixed(2)}</strong></td>
+                        <td><strong style="color: ${courseGrade === 'O' ? '#4CAF50' : courseGrade === 'A+' || courseGrade === 'A' ? '#2196F3' : courseGrade === 'F' ? '#F44336' : '#FF9800'};">${courseGrade}</strong></td>
+                        <td><strong>${gpoints.toFixed(1)}</strong></td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            // Calculate CGPA
+            const cgpa = totalGradePoints / totalCredits;
+            
+            // Determine performance level
+            let performanceText, performanceClass;
+            if (cgpa >= 8) {
+                performanceText = '🎉 Excellent!';
+                performanceClass = 'excellent';
+            } else if (cgpa >= 7) {
+                performanceText = '👍 Very Good';
+                performanceClass = 'very-good';
+            } else if (cgpa >= 6) {
+                performanceText = '✅ Good';
+                performanceClass = 'good';
+            } else {
+                performanceText = '⚠️ Needs Improvement';
+                performanceClass = 'needs-improvement';
+            }
+            
+            document.getElementById('results').innerHTML = tableHTML + `
+                <div class="summary">
+                    <h3>📊 Semester Summary</h3>
+                    <div class="cgpa-display">
+                        CGPA: ${cgpa.toFixed(2)}
+                        <span class="performance-badge ${performanceClass}">${performanceText}</span>
+                    </div>
+                    <p style="text-align: center; font-size: 18px;">
+                        <strong>Total Credits:</strong> ${totalCredits} | 
+                        <strong>Total Grade Points:</strong> ${totalGradePoints.toFixed(1)}
+                    </p>
+                    <hr style="margin: 20px 0; border: none; border-top: 2px solid #ddd;">
+                    <p style="font-size: 14px; color: #666; text-align: center;">
+                        <strong>Calculation Formula:</strong> WGP = (S1 × 0.30) + (LE × 0.25) + (S2 × 0.45)<br>
+                        <strong>CGPA:</strong> Total Grade Points ÷ Total Credits
+                    </p>
+                </div>
+            `;
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize with default 5 courses
+        window.addEventListener('DOMContentLoaded', () => {
+            addCourses();
+        });
+    </script>
+</body>
+</html>
